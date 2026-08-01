@@ -1,0 +1,89 @@
+---
+import ContactBlock from './ContactBlock.astro';
+import type { NavItem } from './Nav.astro';
+
+interface HoursRow {
+  label: string;
+  hours: string;
+}
+
+interface Props {
+  siteName: string;
+  navItems: NavItem[];
+  addressLines?: string[];
+  phone: string;
+  phoneHref: string;
+  email?: string;
+  hours?: HoursRow[];
+}
+
+const { siteName, navItems, addressLines, phone, phoneHref, email, hours } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer-inner">
+    <div>
+      <p class="site-footer-name">{siteName}</p>
+      <ContactBlock addressLines={addressLines} phone={phone} phoneHref={phoneHref} email={email} hours={hours} />
+    </div>
+    <nav aria-label="Footer">
+      <ul class="site-footer-nav">
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <p class="site-footer-legal container">&copy; {year} {siteName}. All rights reserved.</p>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--c-surface-alt);
+    margin-top: var(--sp-6);
+    padding-block: var(--sp-5);
+  }
+
+  .site-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sp-5);
+  }
+
+  .site-footer-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--fs-3);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .site-footer-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+  }
+
+  .site-footer-nav a {
+    color: var(--c-ink);
+    text-decoration: none;
+  }
+
+  .site-footer-nav a:hover {
+    color: var(--c-accent);
+  }
+
+  .site-footer-legal {
+    margin-top: var(--sp-5);
+    color: var(--c-ink-muted);
+    font-size: var(--fs-1);
+  }
+</style>

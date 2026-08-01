@@ -1,0 +1,42 @@
+/*
+  Design Token Contract (CLAUDE.md).
+  SMOKE-TEST VALUES: this palette/scale exists to prove the interface works end to
+  end. It is not a client identity and must not be reused as one — every real
+  build replaces these values from client-specific provenance (Phase 2).
+
+  Type scale ratio: 1.2 (minor third), base = --fs-2 = 1rem.
+  Space scale: loosely 1.5x steps from a 4px unit, not strict powers of two,
+  so mid-range gaps (cards, section padding) have a usable value.
+*/
+
+:root {
+  /* Color */
+  --c-surface: #f7f5f2;
+  --c-surface-alt: #eee9e2;
+  --c-ink: #1f1b16;
+  --c-ink-muted: #5a5248;
+  --c-accent: #8a5a2b;
+  --c-accent-2: #3f6357;
+
+  /* Type */
+  --font-display: 'Georgia', 'Iowan Old Style', serif;
+  --font-body: -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --fs-1: 0.833rem;
+  --fs-2: 1rem;
+  --fs-3: 1.2rem;
+  --fs-4: 1.44rem;
+  --fs-5: 1.728rem;
+  --fs-6: 2.074rem;
+
+  /* Space */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 1rem;
+  --sp-4: 1.5rem;
+  --sp-5: 2.5rem;
+  --sp-6: 4rem;
+
+  /* Shape */
+  --radius-base: 0.25rem;
+  --radius-large: 0.75rem;
+}

@@ -1,0 +1,47 @@
+---
+// Renders only real, rights-cleared proof (CLIENT_SPEC §6). Never invent a
+// quote, stat, or credential to fill this slot.
+interface Props {
+  kind: 'testimonial' | 'credential' | 'stat';
+  statement: string;
+  attribution?: string;
+  sourceUrl?: string;
+}
+
+const { kind, statement, attribution, sourceUrl } = Astro.props;
+---
+
+<figure class="proof-item" data-kind={kind}>
+  <blockquote>
+    <p>{statement}</p>
+  </blockquote>
+  {
+    attribution && (
+      <figcaption>
+        {sourceUrl ? <a href={sourceUrl}>{attribution}</a> : attribution}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .proof-item {
+    margin: 0;
+    padding: var(--sp-4);
+    border-left: 4px solid var(--c-accent-2);
+  }
+
+  .proof-item blockquote {
+    margin: 0 0 var(--sp-2);
+  }
+
+  .proof-item p {
+    margin: 0;
+    font-size: var(--fs-3);
+  }
+
+  .proof-item figcaption {
+    color: var(--c-ink-muted);
+    font-size: var(--fs-1);
+  }
+</style>

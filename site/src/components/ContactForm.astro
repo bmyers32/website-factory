@@ -1,0 +1,66 @@
+---
+// Optional-feature interface, per CLAUDE.md — build/use only when a client spec
+// sets contact_form: on. This component is the accessible markup contract, not a
+// working submission path. Wiring a real client onto it additionally requires,
+// per CLIENT_SPEC §7:
+//   - `action` pointing at the approved serverless handler (e.g. a Cloudflare
+//     Pages Function) that performs server-side validation, sanitization, and
+//     rate limiting/anti-bot checks before accepting a submission — never trust
+//     the honeypot alone;
+//   - a real submission recipient and a monitored delivery-failure fallback;
+//   - copy for the confirmation state and any autoresponder, both client-approved;
+//   - a stated retention/deletion rule recorded in CLIENT_SPEC §8.
+// Do not enable this on a page until all of the above are specified and true.
+import FormField from './FormField.astro';
+
+interface Props {
+  action: string;
+  submitLabel?: string;
+}
+
+const { action, submitLabel = 'Send message' } = Astro.props;
+---
+
+<form class="contact-form" method="POST" action={action} novalidate={false}>
+  <FormField name="name" label="Name" required autocomplete="name" />
+  <FormField name="email" label="Email" type="email" required autocomplete="email" />
+  <FormField name="phone" label="Phone" type="tel" autocomplete="tel" />
+  <FormField name="message" label="Message" type="textarea" required />
+
+  <!-- Honeypot: real visitors never see or fill this. Server must reject any
+       submission where this field is non-empty. -->
+  <div class="hp-field" aria-hidden="true">
+    <label for="field-company">Company</label>
+    <input id="field-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button type="submit">{submitLabel}</button>
+</form>
+
+<style>
+  .contact-form {
+    max-width: 32rem;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+  }
+
+  .contact-form button[type='submit'] {
+    background: var(--c-accent);
+    color: var(--c-surface);
+    border: 2px solid var(--c-accent);
+    border-radius: var(--radius-base);
+    padding: var(--sp-2) var(--sp-4);
+    font-weight: 700;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .contact-form button[type='submit']:hover {
+    background: var(--c-ink);
+    border-color: var(--c-ink);
+  }
+</style>

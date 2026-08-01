@@ -1,0 +1,64 @@
+---
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  items: NavItem[];
+  currentPath: string;
+}
+
+const { items, currentPath } = Astro.props;
+
+function isCurrent(href: string, path: string) {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(`${href}/`);
+}
+---
+
+<nav aria-label="Primary">
+  <ul class="nav-list">
+    {
+      items.map((item) => {
+        const current = isCurrent(item.href, currentPath);
+        return (
+          <li>
+            <a href={item.href} aria-current={current ? 'page' : undefined}>
+              {item.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-list a {
+    color: var(--c-ink);
+    text-decoration: none;
+    font-weight: 600;
+    padding: var(--sp-2) 0;
+    display: inline-block;
+  }
+
+  .nav-list a:hover {
+    color: var(--c-accent);
+    text-decoration: underline;
+  }
+
+  .nav-list a[aria-current='page'] {
+    color: var(--c-accent);
+    border-bottom: 2px solid var(--c-accent);
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href?: string;
+}
+
+const { title, description, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class="service-item" href={href}>
+  <h3>{title}</h3>
+  <p>{description}</p>
+  {href && <span aria-hidden="true" class="service-item-arrow">→</span>}
+</Tag>
+
+<style>
+  .service-item {
+    display: block;
+    padding: var(--sp-4);
+    background: var(--c-surface-alt);
+    border-radius: var(--radius-base);
+    color: inherit;
+    text-decoration: none;
+    position: relative;
+  }
+
+  a.service-item:hover h3 {
+    color: var(--c-accent);
+  }
+
+  .service-item h3 {
+    font-size: var(--fs-3);
+    margin-bottom: var(--sp-2);
+  }
+
+  .service-item p {
+    margin: 0;
+    color: var(--c-ink-muted);
+  }
+
+  .service-item-arrow {
+    position: absolute;
+    top: var(--sp-4);
+    right: var(--sp-4);
+    color: var(--c-accent);
+  }
+</style>

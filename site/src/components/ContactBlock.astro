@@ -1,0 +1,82 @@
+---
+interface HoursRow {
+  label: string;
+  hours: string;
+}
+
+interface Props {
+  addressLines?: string[];
+  phone: string;
+  phoneHref: string;
+  email?: string;
+  hours?: HoursRow[];
+}
+
+const { addressLines, phone, phoneHref, email, hours } = Astro.props;
+---
+
+<address class="contact-block">
+  {
+    addressLines && addressLines.length > 0 && (
+      <p class="contact-address">
+        {addressLines.map((line) => (
+          <>
+            {line}
+            <br />
+          </>
+        ))}
+      </p>
+    )
+  }
+  <p>
+    <a href={`tel:${phoneHref}`}>{phone}</a>
+  </p>
+  {
+    email && (
+      <p>
+        <a href={`mailto:${email}`}>{email}</a>
+      </p>
+    )
+  }
+  {
+    hours && hours.length > 0 && (
+      <table class="contact-hours">
+        <caption class="visually-hidden">Hours</caption>
+        <tbody>
+          {hours.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              <td>{row.hours}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
+</address>
+
+<style>
+  .contact-block {
+    font-style: normal;
+  }
+
+  .contact-address {
+    margin: 0 0 var(--sp-2);
+  }
+
+  .contact-hours {
+    border-collapse: collapse;
+    margin-top: var(--sp-2);
+  }
+
+  .contact-hours th,
+  .contact-hours td {
+    text-align: left;
+    padding: var(--sp-1) var(--sp-3) var(--sp-1) 0;
+    font-weight: normal;
+  }
+
+  .contact-hours th {
+    color: var(--c-ink-muted);
+  }
+</style>

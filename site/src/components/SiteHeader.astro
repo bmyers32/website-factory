@@ -1,0 +1,59 @@
+---
+import Nav from './Nav.astro';
+import type { NavItem } from './Nav.astro';
+
+interface Props {
+  siteName: string;
+  navItems: NavItem[];
+  currentPath: string;
+  phone?: string;
+  phoneHref?: string;
+}
+
+const { siteName, navItems, currentPath, phone, phoneHref } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a class="site-name" href="/">{siteName}</a>
+    <Nav items={navItems} currentPath={currentPath} />
+    {
+      phone && phoneHref && (
+        <a class="site-header-phone" href={`tel:${phoneHref}`}>
+          {phone}
+        </a>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-surface-alt);
+  }
+
+  .site-header-inner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-3) var(--sp-4);
+    padding-block: var(--sp-3);
+  }
+
+  .site-name {
+    font-family: var(--font-display);
+    font-size: var(--fs-4);
+    font-weight: 700;
+    color: var(--c-ink);
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  .site-header-phone {
+    font-weight: 700;
+    color: var(--c-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { src, alt, caption, widths = [400, 800, 1200], sizes = '100vw', loading = 'lazy' } = Astro.props;
+
+if (!alt.trim()) {
+  throw new Error('MediaFigure requires a non-empty alt (use alt="" only via a dedicated decorative variant).');
+}
+---
+
+<figure class="media-figure">
+  <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .media-figure {
+    margin: 0;
+  }
+
+  .media-figure img {
+    border-radius: var(--radius-base);
+  }
+
+  .media-figure figcaption {
+    margin-top: var(--sp-2);
+    font-size: var(--fs-1);
+    color: var(--c-ink-muted);
+  }
+</style>

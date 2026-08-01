@@ -1,0 +1,84 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import type { NavItem } from '../components/Nav.astro';
+import { isProduction, siteUrl } from '../lib/env';
+import '../styles/global.css';
+
+interface HoursRow {
+  label: string;
+  hours: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  siteName: string;
+  navItems: NavItem[];
+  phone: string;
+  phoneHref: string;
+  addressLines?: string[];
+  email?: string;
+  hours?: HoursRow[];
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  siteName,
+  navItems,
+  phone,
+  phoneHref,
+  addressLines,
+  email,
+  hours,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, siteUrl).toString();
+// Preview deploys (and any explicit per-page noindex) never get indexed, regardless
+// of what an individual page requests — see CLAUDE.md "preview URLs set to noindex".
+const shouldNoindex = noindex || !isProduction;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content={shouldNoindex ? 'noindex, nofollow' : 'index, follow'} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, siteUrl).toString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <slot name="schema" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader siteName={siteName} navItems={navItems} currentPath={currentPath} phone={phone} phoneHref={phoneHref} />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter
+      siteName={siteName}
+      navItems={navItems}
+      addressLines={addressLines}
+      phone={phone}
+      phoneHref={phoneHref}
+      email={email}
+      hours={hours}
+    />
+  </body>
+</html>

@@ -1,0 +1,180 @@
+---
+// SMOKE-TEST PAGE — renders the provisional primitives against the fictional
+// fixture in fixtures/copperline-fixture-spec.md. Not a client deliverable.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceListItem from '../components/ServiceListItem.astro';
+import ProofItem from '../components/ProofItem.astro';
+import MediaFigure from '../components/MediaFigure.astro';
+import FaqItem from '../components/FaqItem.astro';
+import Cta from '../components/Cta.astro';
+import hero from '../assets/hero-DUMMY.png';
+import team from '../assets/team-DUMMY.png';
+import work1 from '../assets/work1-DUMMY.png';
+
+const siteName = 'Copperline Roofing & Sheet Metal';
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Contact', href: '/#contact' },
+];
+const phone = '(555) 010-0142';
+const phoneHref = '5550100142';
+const hours = [
+  { label: 'Mon–Fri', hours: '7:00 AM–5:00 PM' },
+  { label: 'Sat', hours: 'By appointment' },
+  { label: 'Sun', hours: 'Closed' },
+];
+
+const services = [
+  {
+    title: 'Roof replacement',
+    description: 'Full tear-off and replacement, asphalt or standing-seam metal.',
+  },
+  {
+    title: 'Custom copper flashing',
+    description: 'Hand-formed copper flashing and valleys fabricated in-shop.',
+  },
+  {
+    title: 'Storm repair',
+    description: 'Tarping and repair scheduling, with insurance paperwork support.',
+  },
+];
+
+const faqs = [
+  {
+    question: 'Will the crew match the existing roofline instead of a generic patch?',
+    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+  },
+  {
+    question: 'How long does a full replacement actually take?',
+    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+  },
+  {
+    question: 'Do you handle the insurance claim paperwork or is that on me?',
+    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+  },
+];
+---
+
+<BaseLayout
+  title={`${siteName} — Smoke Test`}
+  description="Factory smoke-test rendering of the provisional Astro base against a fictional fixture business."
+  siteName={siteName}
+  navItems={navItems}
+  phone={phone}
+  phoneHref={phoneHref}
+  hours={hours}
+>
+  <Fragment slot="schema">
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'RoofingContractor',
+      name: siteName,
+      telephone: phone,
+      openingHoursSpecification: hours.map((row) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: row.label,
+        description: row.hours,
+      })),
+    })} />
+  </Fragment>
+
+  <div class="smoke-test-banner container">
+    <strong>Factory smoke test.</strong> Copperline Roofing & Sheet Metal is a fictional
+    fixture business (see <code>fixtures/copperline-fixture-spec.md</code>) used to
+    exercise the provisional base. Not a real business, not for client delivery.
+  </div>
+
+  <section class="hero container">
+    <div class="hero-copy">
+      <h1>Roofing and custom sheet metal, built to match what's already there.</h1>
+      <p>
+        Fictional smoke-test copy standing in for client-voiced language. A real build
+        replaces this with copy realized from the approved voice corpus (CLIENT_SPEC §5).
+      </p>
+      <div class="hero-ctas">
+        <Cta href="tel:5550100142" label={`Call ${phone}`} variant="primary" />
+        <Cta href="/#contact" label="Request a quote" variant="secondary" />
+      </div>
+    </div>
+    <MediaFigure src={hero} alt="Fictional smoke-test hero photo of a copper roof valley under construction." loading="eager" />
+  </section>
+
+  <section id="services" class="container">
+    <h2>Services</h2>
+    <div class="service-grid">
+      {services.map((service) => <ServiceListItem title={service.title} description={service.description} />)}
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>The crew</h2>
+    <MediaFigure src={team} alt="Fictional smoke-test photo of the Copperline crew." caption="Fictional smoke-test caption." />
+  </section>
+
+  <section class="container">
+    <h2>Recent work</h2>
+    <MediaFigure src={work1} alt="Fictional smoke-test photo of a completed standing-seam metal roof." />
+    <ProofItem
+      kind="stat"
+      statement="Fictional smoke-test placeholder — not a real client statistic."
+      attribution="Smoke-test fixture"
+    />
+  </section>
+
+  <section class="container">
+    <h2>Common questions</h2>
+    {faqs.map((faq) => <FaqItem question={faq.question}>{faq.answer}</FaqItem>)}
+  </section>
+
+  <section id="contact" class="container">
+    <h2>Get a quote</h2>
+    <p>
+      The optional contact-form interface (<code>src/components/ContactForm.astro</code>) is
+      intentionally not enabled on this page — no delivery endpoint, recipient, or retention
+      rule exists for a fixture business. Call or use the interface once a real spec sets
+      <code>contact_form: on</code> with those decisions recorded.
+    </p>
+    <Cta href="tel:5550100142" label={`Call ${phone}`} variant="primary" />
+  </section>
+</BaseLayout>
+
+<style>
+  .smoke-test-banner {
+    background: var(--c-surface-alt);
+    border: 2px dashed var(--c-accent-2);
+    border-radius: var(--radius-base);
+    padding: var(--sp-3);
+    margin-block: var(--sp-4);
+    font-size: var(--fs-1);
+  }
+
+  .hero {
+    display: grid;
+    gap: var(--sp-5);
+    padding-block: var(--sp-5);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: var(--sp-3);
+    flex-wrap: wrap;
+    margin-top: var(--sp-4);
+  }
+
+  .service-grid {
+    display: grid;
+    gap: var(--sp-4);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+
+  section {
+    padding-block: var(--sp-5);
+  }
+
+  @media (min-width: 48rem) {
+    .hero {
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+    }
+  }
+</style>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Cta from '../components/Cta.astro';
+
+const siteName = 'Copperline Roofing & Sheet Metal';
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Contact', href: '/#contact' },
+];
+---
+
+<BaseLayout
+  title={`Page not found — ${siteName}`}
+  description="The page you're looking for doesn't exist."
+  siteName={siteName}
+  navItems={navItems}
+  phone="(555) 010-0142"
+  phoneHref="5550100142"
+  noindex={true}
+>
+  <section class="container not-found">
+    <h1>Page not found</h1>
+    <p>The page you're looking for doesn't exist or may have moved.</p>
+    <Cta href="/" label="Back to home" variant="primary" />
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: var(--sp-6);
+    text-align: center;
+  }
+</style>
