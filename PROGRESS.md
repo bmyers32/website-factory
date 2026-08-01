@@ -6,7 +6,7 @@ Use: Current resumable state, not a log. OVERWRITE every field at session end. G
 
 ## Repository State
 - **Branch:** `main`
-- **Commit SHA:** `{{ set at commit — see git log }}`
+- **Commit SHA:** `c5ba996`
 - **Spec version / hash:** N/A — this session ran the Technical Smoke Test from `OPERATOR-PROMPTS.md`, not a client build. `CLIENT_SPEC.md` remains the untouched blank template.
 - **Preview URL:** none yet — Cloudflare Pages connection is pending, operator-initiated (see below).
 - **Deployment state:** local — build verified in both preview and production env modes; not yet deployed. Do not treat this as deployment evidence.
