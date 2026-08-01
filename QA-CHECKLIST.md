@@ -35,6 +35,7 @@ Use: Human delivery gate. Record evidence, not only checkmarks. Mark each applic
 
 ## 5 · Conversion, Forms, Privacy, and Dependencies
 - Primary CTA is consistent and leads to an operational response path.
+- Each major concern recorded in CLIENT_SPEC §5 appears in the concern map; its answer is supported by the approved spec; its planned treatment exists in the built pages or an approved deviation is documented; unsupported answers were flagged rather than improvised.
 - When form is ON: test valid, missing/invalid, malicious, duplicate/spam-control, confirmation, recipient delivery, production delivery, retention, and failure fallback.
 - When form is OFF: no unused endpoint, form copy, or false privacy disclosure remains.
 - Booking, map, analytics, fonts, and other third parties have an owner, privacy treatment, and usable fallback.

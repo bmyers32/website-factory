@@ -64,6 +64,7 @@ contact_form: {{ on | off }}
 | `{{ }}` | `{{ }}` | `{{ }}` | `{{ y/n }}` | `{{ client interview/document }}` |
 
 - **De-emphasize / exclude:** `{{ }}`
+- **Typical booking/contact triggers** `[HIGH VALUE]`: `{{ event, worsening problem, deadline, failed alternative, life change }}` — *informs relevance and section emphasis, never fear-based urgency copy*
 - **Typical job/customer fit:** `{{ }}`
 - **Not a fit / disqualification:** `{{ }}`
 - **Service process in real steps:** `{{ inquiry → visit → quote → work, etc. }}`

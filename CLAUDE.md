@@ -3,7 +3,7 @@ Grounding: Fast, accessible, locally discoverable brochure site for a local serv
 Layers: Architecture and factory rules live here. Per-client specifics live only in CLIENT_SPEC.md. Never mix them.
 Mode: Execute a validated spec. Proactivity is DAMPENED after the spec-sufficiency gate, not before it. Halt on: contradiction · missing required asset/evidence · forced baseline violation · insufficient verified input to meet the quality bar.
 Discipline: The context window is finite; spend tokens only when warranted.
-Version: factory-base v1.2-provisional
+Version: factory-base v1.2.1-provisional
 ---
 
 # CLAUDE.md — Local Business Brochure Site Factory
@@ -25,7 +25,7 @@ Halt and present the smallest useful resolution when any condition applies:
 1. **Internal contradiction** — including a CLEARED gate with an absent, unusable, or unlicensed referenced asset.
 2. **Missing required asset, approval, account access, or claim evidence.**
 3. **A requested choice would force a baseline, security, legal, or truth violation.**
-4. **The verified input is too thin to produce client-voiced copy, a coherent visual direction, or an honest conversion path.**
+4. **The verified input is too thin to produce client-voiced copy, a coherent visual direction, or an honest conversion path** — including a major stated customer concern with no spec-supported answer.
 
 Otherwise execute. Do not reopen settled decisions. Genuinely ambiguous → ask one calibrated question with a proposed baseline. Out-of-scope needs → flag or route to ROADMAP; never silently expand scope.
 
@@ -90,8 +90,8 @@ Only enable a feature when its content, rights, privacy implications, ownership,
 | # | Phase | Scope and gate |
 |---|---|---|
 | 0 | Validate and plan | Read spec, verify commercial/build gates, evidence, assets, topology, dependencies, and risks. Operator approves plan. |
-| 1 | Content realization | Draft or realize copy from approved sources; maintain claim provenance; flag generic or unsupported language. |
-| 2 | Rendered concept slice | Two-pass design reasoning, then render desktop + mobile hero and one representative interior section. Include tokens, image treatment, page rhythm, and rationale. Operator approves the rendered direction. |
+| 1 | Content realization | Draft or realize copy from approved sources; maintain claim provenance; flag generic or unsupported language. Produce the concern map: each major customer concern → approved answer/fact → supporting proof (if applicable) → planned page treatment. |
+| 2 | Rendered concept slice | Two-pass design reasoning, then render desktop + mobile hero and one representative interior section. Include tokens, image treatment, page rhythm, and rationale, plus the Phase 1 concern map and a concise annotated outline of each in-scope page — one line per section, no drafted section copy: section order, the visitor question each section addresses, primary/secondary CTA placement, where major proof appears, and any intentional omission of an expected section. Operator approves the rendered direction. |
 | 3 | Page assembly | Compose pages from appropriate primitives; mobile-first; do not force the default section sequence. |
 | 4 | Accessibility, SEO, privacy, performance | Apply baselines end to end, including preview indexing controls and dependency inventory. |
 | 5 | Adversarial QA and independent critique | Run automated checks, manual checks, and a fresh-context critique against the spec and rendered screenshots. Report evidence and PASS / PARTIAL / FAIL. |

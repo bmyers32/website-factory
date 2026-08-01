@@ -25,7 +25,11 @@ conversion path, dependencies, missing evidence, and build plan. Stop for approv
 
 After Phase 1, produce the Phase 2 rendered concept slice: desktop and mobile hero,
 one representative interior section, tokens, image treatment, page rhythm, and
-client-specific provenance. Stop for approval. Do not deploy production.
+client-specific provenance — plus the Phase 1 concern map (concern → approved
+answer → proof if applicable → planned treatment) and a concise annotated
+outline of each in-scope page (one line per section, no drafted copy: section
+order, the question each section answers, CTA and proof placement, intentional
+omissions). Stop for approval. Do not deploy production.
 ```
 
 ## Adversarial Spec Test
@@ -41,7 +45,8 @@ Do not improve or invent the client facts.
 ```text
 Act as an independent reviewer. Do not read the creating agent's reasoning or code
 first. Review only CLIENT_SPEC.md, the rendered mobile/desktop screenshots, and the
-realized copy. Score factual grounding, client voice, conversion clarity, visual
+realized copy. Score factual grounding, client voice, conversion clarity, concern
+resolution (does the site answer the spec's stated customer concerns?), visual
 distinctiveness, asset coherence, trust, accessibility risks, and mobile quality.
 Run the competitor-name-swap test. Return PASS / PARTIAL / FAIL with concrete fixes.
 ```
