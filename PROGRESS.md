@@ -11,11 +11,11 @@ passed until Phases B–E below are all cleared.
 - **Branch:** `main`
 - **Commit SHA:** `c5c7cf4`
 - **Spec version / hash:** N/A — this session ran the Technical Smoke Test from `OPERATOR-PROMPTS.md`, not a client build. `CLIENT_SPEC.md` remains the untouched blank template.
-- **Preview URL:** none yet — operator is connecting `site/` via the Cloudflare Pages dashboard next.
-- **Deployment state:** local only. Do not treat a local build as deployment evidence.
+- **Preview URL:** `https://website-factory-54g.pages.dev/`
+- **Deployment state:** preview — live and independently verified (see Phase B).
 
 ## Smoke-Test Phase State
-- **Phase B — Infrastructure:** Passed locally (`npm run check`, `npm run build` in both preview and production env modes — see evidence below). Deployment itself is **pending operator verification** through the operator's own Cloudflare dashboard connection and a joint live-preview/noindex check. Phase B is not complete until that joint check happens.
+- **Phase B — Infrastructure: PASS.** Local checks passed (`npm run check`, `npm run build` in both preview and production env modes) and the live deploy was verified jointly on 2026-08-02: operator confirmed PASS, and the executing agent independently fetched the live preview URL and confirmed `<meta name="robots" content="noindex, nofollow">`, `/robots.txt` → `Disallow: /`, `/sitemap-index.xml` → 404 (correctly absent), and an unknown route → 404. **Flagged, non-blocking:** the page's canonical/`og:url` render as `https://smoke-test.pages.dev/`, not the actual deploy host `https://website-factory-54g.pages.dev/` — indicates `PUBLIC_SITE_URL` is set to a different value than this deploy's URL in the Cloudflare dashboard. Harmless while noindexed; recheck before any production cutover.
 - **Phase C — Sunny-day fixture run:** **NOT STARTED.** Must run in a fresh session against an operator-supplied specification — `fixtures/copperline-fixture-spec.md` (authored by the executing agent this session) does not satisfy this phase.
 - **Phase D — Adversarial fixture run:** **NOT STARTED** as validation evidence. `fixtures/adversarial-weak-spec.md` and its result file were authored and self-graded by the same agent that would be tested, so they do not count toward the smoke-test exit criteria — they remain on record only as a halt-condition diagnostic (see below). Real Phase D must run in a fresh session against an operator-supplied specification and be graded using materials unavailable to the executing agent.
 - **Phase E — Findings and disposition:** **NOT STARTED.**
@@ -32,9 +32,9 @@ passed until Phases B–E below are all cleared.
   - `npm run build` — verified twice: default/preview env (robots.txt `Disallow: /`, no sitemap pages, `<meta name="robots" content="noindex, nofollow">`) and with `PUBLIC_DEPLOY_ENV=production` (robots.txt allows + sitemap link, `sitemap-index.xml` generated, `<meta name="robots" content="index, follow">`). Both timestamped 2026-08-01.
 
 ## Next and Blocks
-- **Exact next action:** Operator connects `site/` to Cloudflare Pages per `site/README-DEPLOY.md`. Then, jointly: verify the live preview URL, including that it actually serves `noindex` — this closes out Phase B. Phases C and D still require fresh sessions run against operator-supplied specifications, graded on materials the executing agent doesn't have. No further building, revising, or testing happens until then.
-- **Open / flagged:** none blocking. `dist/` and `node_modules/` are gitignored (verified via `git check-ignore` before staging).
-- **Client/operator decision pending:** operator to initiate the Cloudflare dashboard connection.
+- **Exact next action:** Phase C — a sunny-day fixture run in a fresh session against an operator-supplied specification (not one authored by the executing agent). Phase D (adversarial) likewise requires a fresh session against an operator-supplied spec, graded on materials unavailable to the executing agent. No further building, revising, or testing happens until the operator initiates one of those.
+- **Open / flagged:** `PUBLIC_SITE_URL` in the Cloudflare dashboard doesn't match this deploy's actual `*.pages.dev` host (see Phase B note) — non-blocking, recheck before production. `dist/` and `node_modules/` are gitignored (verified via `git check-ignore` before staging).
+- **Client/operator decision pending:** operator to supply the Phase C and Phase D specifications and decide session handling (fresh session per the constraint above).
 - **Revision allowance remaining:** N/A
 - **Deferred → ROADMAP:** none added this session.
 
