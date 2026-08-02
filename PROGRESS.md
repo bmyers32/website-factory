@@ -9,7 +9,7 @@ passed until Phases B–E below are all cleared.
 
 ## Repository State
 - **Branch:** `main`
-- **Commit SHA:** `c5c7cf4`
+- **Commit SHA:** `b8cefff`
 - **Spec version / hash:** N/A — this session ran the Technical Smoke Test from `OPERATOR-PROMPTS.md`, not a client build. `CLIENT_SPEC.md` remains the untouched blank template.
 - **Preview URL:** `https://website-factory-54g.pages.dev/`
 - **Deployment state:** preview — live and independently verified (see Phase B).
@@ -32,7 +32,7 @@ passed until Phases B–E below are all cleared.
   - `npm run build` — verified twice: default/preview env (robots.txt `Disallow: /`, no sitemap pages, `<meta name="robots" content="noindex, nofollow">`) and with `PUBLIC_DEPLOY_ENV=production` (robots.txt allows + sitemap link, `sitemap-index.xml` generated, `<meta name="robots" content="index, follow">`). Both timestamped 2026-08-01.
 
 ## Next and Blocks
-- **Exact next action:** Phase C — a sunny-day fixture run in a fresh session against an operator-supplied specification (not one authored by the executing agent). Phase D (adversarial) likewise requires a fresh session against an operator-supplied spec, graded on materials unavailable to the executing agent. No further building, revising, or testing happens until the operator initiates one of those.
+- **Exact next action:** Operator launches Phase C in a new session (sunny-day fixture run against an operator-supplied specification, not one authored by the executing agent). Do not start Phase C in this session. Phase D (adversarial) likewise requires its own fresh session against an operator-supplied spec, graded on materials unavailable to the executing agent.
 - **Open / flagged:** `PUBLIC_SITE_URL` in the Cloudflare dashboard doesn't match this deploy's actual `*.pages.dev` host (see Phase B note) — non-blocking, recheck before production. `dist/` and `node_modules/` are gitignored (verified via `git check-ignore` before staging).
 - **Client/operator decision pending:** operator to supply the Phase C and Phase D specifications and decide session handling (fresh session per the constraint above).
 - **Revision allowance remaining:** N/A
