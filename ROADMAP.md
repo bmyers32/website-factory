@@ -26,3 +26,12 @@
 - **Why deferred now:**
 - **Rough labor:** `{{ S <2h | M 2–8h | L >8h }}`
 - **Dependencies / owner:**
+
+### RM-001 · factory · Standing form path (current baseline) · Accepted
+Current validated standing form path for Pages-hosted factory sites:
+Cloudflare Pages Function + Resend delivery. API key as Cloudflare secret
+only — never in repo, logs, fixtures, or handoff archives. Fixture builds:
+operator-owned test Resend account, restricted test key. Paid clients:
+client-owned Resend account + verified sending domain unless contract
+defines managed service; rotation/revocation documented at handoff.
+Revisit trigger: factory deployment baseline moves to Workers Static Assets.
