@@ -1,6 +1,7 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import CallBar from '../components/CallBar.astro';
 import type { NavItem } from '../components/Nav.astro';
 import { isProduction, siteUrl } from '../lib/env';
 import '../styles/global.css';
@@ -22,6 +23,11 @@ interface Props {
   hours?: HoursRow[];
   ogImage?: string;
   noindex?: boolean;
+  /** Defaults to navItems when omitted, preserving prior behavior. */
+  footerNavItems?: NavItem[];
+  trustLine?: string;
+  serviceArea?: string;
+  stickyCallBar?: boolean;
 }
 
 const {
@@ -36,6 +42,10 @@ const {
   hours,
   ogImage,
   noindex = false,
+  footerNavItems,
+  trustLine,
+  serviceArea,
+  stickyCallBar = false,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -65,7 +75,7 @@ const shouldNoindex = noindex || !isProduction;
 
     <slot name="schema" />
   </head>
-  <body>
+  <body class:list={[stickyCallBar && 'has-call-bar']}>
     <a class="skip-link" href="#main">Skip to content</a>
     <SiteHeader siteName={siteName} navItems={navItems} currentPath={currentPath} phone={phone} phoneHref={phoneHref} />
     <main id="main">
@@ -73,12 +83,15 @@ const shouldNoindex = noindex || !isProduction;
     </main>
     <SiteFooter
       siteName={siteName}
-      navItems={navItems}
+      navItems={footerNavItems ?? navItems}
       addressLines={addressLines}
       phone={phone}
       phoneHref={phoneHref}
       email={email}
       hours={hours}
+      trustLine={trustLine}
+      serviceArea={serviceArea}
     />
+    {stickyCallBar && <CallBar phone={phone} phoneHref={phoneHref} />}
   </body>
 </html>

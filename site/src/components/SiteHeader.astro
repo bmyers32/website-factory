@@ -51,9 +51,25 @@ const { siteName, navItems, currentPath, phone, phoneHref } = Astro.props;
   }
 
   .site-header-phone {
+    font-family: var(--font-display);
     font-weight: 700;
     color: var(--c-accent);
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  /* Directive 2: a more visible phone number specifically in the mobile
+     header — larger, and reordered right after the site name, ahead of nav
+     (flex `order`; source/DOM order and tab order are untouched). */
+  @media (max-width: 47.99rem) {
+    .site-header-phone {
+      font-size: var(--fs-4);
+      order: 1;
+    }
+
+    .site-header-inner :global(nav[aria-label='Primary']) {
+      order: 2;
+      width: 100%;
+    }
   }
 </style>

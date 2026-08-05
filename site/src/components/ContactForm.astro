@@ -1,37 +1,38 @@
 ---
 // Optional-feature interface, per CLAUDE.md — build/use only when a client spec
-// sets contact_form: on. This component is the accessible markup contract, not a
-// working submission path. Wiring a real client onto it additionally requires,
-// per CLIENT_SPEC §7:
-//   - `action` pointing at the approved serverless handler (e.g. a Cloudflare
-//     Pages Function) that performs server-side validation, sanitization, and
-//     rate limiting/anti-bot checks before accepting a submission — never trust
-//     the honeypot alone;
-//   - a real submission recipient and a monitored delivery-failure fallback;
-//   - copy for the confirmation state and any autoresponder, both client-approved;
-//   - a stated retention/deletion rule recorded in CLIENT_SPEC §8.
-// Do not enable this on a page until all of the above are specified and true.
+// sets contact_form: on. Field set is data-driven via `fields` (see
+// src/lib/contact-fields.ts) so this stays a reusable primitive rather than
+// hardcoding one client's field list.
+//
+// This build (Copperline fixture, Checkpoint 2+ correction round 3): action,
+// recipient, confirmation copy, and retention rule are all specified (see
+// CLIENT_SPEC §7/§8 and functions/api/contact.ts) — the only thing still
+// outstanding is *secrets*. functions/api/contact.ts fails closed (returns a
+// phone-fallback response, never a crash or a false success) whenever
+// RESEND_API_KEY / CONTACT_RECIPIENT are unset, so wiring `action` live here
+// does not make the form operational in the sense that matters — it only
+// becomes operational once the operator adds those secrets in the Cloudflare
+// dashboard at QA. Do not represent it as operational before that.
 import FormField from './FormField.astro';
+import { honeypotFieldName, type ContactFieldDef } from '../lib/contact-fields';
 
 interface Props {
   action: string;
+  fields: ContactFieldDef[];
   submitLabel?: string;
 }
 
-const { action, submitLabel = 'Send message' } = Astro.props;
+const { action, fields, submitLabel = 'Send message' } = Astro.props;
 ---
 
 <form class="contact-form" method="POST" action={action} novalidate={false}>
-  <FormField name="name" label="Name" required autocomplete="name" />
-  <FormField name="email" label="Email" type="email" required autocomplete="email" />
-  <FormField name="phone" label="Phone" type="tel" autocomplete="tel" />
-  <FormField name="message" label="Message" type="textarea" required />
+  {fields.map((field) => <FormField {...field} />)}
 
   <!-- Honeypot: real visitors never see or fill this. Server must reject any
        submission where this field is non-empty. -->
   <div class="hp-field" aria-hidden="true">
-    <label for="field-company">Company</label>
-    <input id="field-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+    <label for={`field-${honeypotFieldName}`}>Company</label>
+    <input id={`field-${honeypotFieldName}`} name={honeypotFieldName} type="text" tabindex="-1" autocomplete="off" />
   </div>
 
   <button type="submit">{submitLabel}</button>
@@ -56,6 +57,7 @@ const { action, submitLabel = 'Send message' } = Astro.props;
     padding: var(--sp-2) var(--sp-4);
     font-weight: 700;
     font: inherit;
+    font-family: var(--font-display);
     cursor: pointer;
   }
 

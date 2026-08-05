@@ -1,5 +1,49 @@
 @import './tokens.css';
 
+/* Self-hosted per SIL OFL 1.1 — see src/assets/fonts/license.txt. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('../assets/fonts/IBMPlexMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBMPlexSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBMPlexSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Sans';
+  src: url('../assets/fonts/IBMPlexSans-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* Minimal reset — enough for consistent baselines, not a full normalize. */
 *,
 *::before,
@@ -106,6 +150,18 @@ input,
 select,
 textarea {
   min-height: 44px;
+}
+
+/* Reserves real document-flow space so the fixed CallBar (see CallBar.astro)
+   never overlaps the footer or any other content, on any page length —
+   this pushes SiteFooter up above the bar rather than merely hoping
+   nothing scrolls under it. Value verified against the bar's actual
+   rendered height during QA (390px screenshot, scrolled to the bottom of
+   the shortest page). */
+@media (max-width: 47.99rem) {
+  body.has-call-bar {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

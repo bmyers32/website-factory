@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Concept slice — Copperline Plumbing (Phase 2, not for delivery)</title>
+<link rel="stylesheet" href="../../../site/src/styles/tokens.css" />
+<style>
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    src: url('../../../site/src/assets/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'IBM Plex Mono';
+    src: url('../../../site/src/assets/fonts/IBMPlexMono-Bold.woff2') format('woff2');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('../../../site/src/assets/fonts/IBMPlexSans-Regular.woff2') format('woff2');
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    src: url('../../../site/src/assets/fonts/IBMPlexSans-Bold.woff2') format('woff2');
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #ccc;
+    font-family: var(--font-body);
+    color: var(--c-ink);
+    padding: var(--sp-5) var(--sp-3);
+  }
+  .banner {
+    max-width: 1440px;
+    margin: 0 auto var(--sp-4);
+    font-family: var(--font-body);
+    font-size: var(--fs-1);
+    background: #fff3cd;
+    border: 1px solid #997404;
+    color: #664d03;
+    padding: var(--sp-3);
+  }
+  .frame-label {
+    max-width: 1440px;
+    margin: var(--sp-5) auto var(--sp-2);
+    font-family: var(--font-display);
+    font-size: var(--fs-2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #333;
+  }
+  .artboard {
+    background: var(--c-surface);
+    color: var(--c-ink);
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #999;
+  }
+  .artboard.desktop { max-width: 1440px; }
+  .artboard.mobile { max-width: 390px; }
+
+  /* --- mirrors SiteHeader.astro / Nav.astro / Cta.astro classes verbatim --- */
+  .site-header { background: var(--c-surface); border-bottom: 1px solid var(--c-surface-alt); }
+  .site-header-inner { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-3) var(--sp-4); padding: var(--sp-3) var(--sp-4); }
+  .site-name { font-family: var(--font-display); font-size: var(--fs-4); font-weight: 700; color: var(--c-ink); text-decoration: none; margin-right: auto; }
+  .site-header-phone { font-weight: 700; color: var(--c-accent); text-decoration: none; white-space: nowrap; font-family: var(--font-display); }
+  .nav-list { display: flex; flex-wrap: wrap; gap: var(--sp-4); list-style: none; margin: 0; padding: 0; }
+  .nav-list a { color: var(--c-ink); text-decoration: none; font-weight: 600; }
+  .mobile .nav-list { display: none; }
+
+  .cta { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: var(--sp-2) var(--sp-4); border-radius: var(--radius-base); font-weight: 700; text-decoration: none; border: 2px solid var(--c-accent); font-family: var(--font-body); }
+  .cta-primary { background: var(--c-accent); color: var(--c-surface); }
+  .cta-secondary { background: transparent; color: var(--c-accent); }
+
+  .container { padding-inline: var(--sp-4); }
+  section { padding-block: var(--sp-5); }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-ink-muted);
+    margin: 0 0 var(--sp-3);
+  }
+
+  .hero { display: grid; gap: var(--sp-5); }
+  .desktop .hero { grid-template-columns: 1.1fr 1fr; align-items: center; padding-block: var(--sp-6); }
+  .mobile .hero { padding-block: var(--sp-5); }
+  .hero h1 { font-family: var(--font-display); font-size: var(--fs-6); line-height: 1.15; margin: 0 0 var(--sp-4); }
+  .mobile .hero h1 { font-size: var(--fs-5); }
+  .hero p.subhead { font-size: var(--fs-3); color: var(--c-ink-muted); margin: 0 0 var(--sp-4); max-width: 34ch; }
+  .hero-ctas { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+  .hero img { width: 100%; height: auto; display: block; border-radius: var(--radius-base); }
+
+  /* --- signature system: the written estimate "quote slip" --- */
+  .proof-section h2 { font-family: var(--font-display); font-size: var(--fs-5); margin: 0 0 var(--sp-4); }
+  .proof-body { font-size: var(--fs-3); line-height: 1.55; max-width: 62ch; margin: 0 0 var(--sp-5); }
+  .quote-slip {
+    border-top: 2px solid var(--c-ink);
+    border-bottom: 1px solid var(--c-ink-muted);
+    border-radius: 0;
+    padding: var(--sp-4) 0;
+    max-width: 46rem;
+    box-shadow: none;
+    background: transparent;
+  }
+  .quote-slip .slip-label {
+    font-family: var(--font-display);
+    font-size: var(--fs-1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin: 0 0 var(--sp-2);
+  }
+  .quote-slip blockquote {
+    margin: 0 0 var(--sp-2);
+    font-size: var(--fs-4);
+    font-family: var(--font-display);
+    line-height: 1.4;
+    color: var(--c-ink);
+  }
+  .quote-slip cite {
+    font-style: normal;
+    font-size: var(--fs-1);
+    color: var(--c-ink-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <strong>Phase 2 concept slice — Copperline Plumbing sunny-day fixture.</strong>
+  Not a route, not page assembly, not for delivery. Hero + one representative
+  interior section only (proof story), rendered at desktop and mobile widths
+  against the tokens now committed in <code>site/src/styles/tokens.css</code>.
+  Rerendered with real self-hosted faces — IBM Plex Mono (display) + IBM Plex
+  Sans (body), SIL OFL 1.1, see src/assets/fonts/license.txt.
+</div>
+
+<div class="frame-label">Desktop — 1440px</div>
+<div class="artboard desktop">
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-name" href="/">Copperline Plumbing</a>
+      <nav aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="site-header-phone" href="tel:+17705550148">(770) 555-0148</a>
+    </div>
+  </header>
+
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">Tucker · Decatur · Chamblee · Brookhaven · North Druid Hills</p>
+      <h1>Old houses. Honest fixes.</h1>
+      <p class="subhead">Repair-first plumbing for 1940s&ndash;70s intown homes &mdash; a flat-rate quote before we start, and a straight answer about what&rsquo;s actually worth fixing.</p>
+      <div class="hero-ctas">
+        <a class="cta cta-primary" href="tel:+17705550148">Call for a straight answer</a>
+        <a class="cta cta-secondary" href="#proof">See how a repair-first quote works</a>
+      </div>
+    </div>
+    <img src="../hero-DUMMY.png" alt="Concept placeholder: technician's hands on copper pipe under a crawlspace joist" />
+  </section>
+
+  <section id="proof" class="container proof-section">
+    <p class="eyebrow">What repair-first actually looks like</p>
+    <h2>One failed joint, not a new system</h2>
+    <p class="proof-body">A Decatur homeowner in a 1962 ranch got two repipe quotes &mdash; $8,400 and $9,100. We opened the wall behind the laundry room, found one failed joint, and fixed it for $240. We showed her photos of the rest of the line: it had years left.</p>
+    <div class="quote-slip">
+      <p class="slip-label">As quoted</p>
+      <blockquote>&ldquo;Two other companies quoted a full repipe. Copperline fixed the actual leak for $240 and showed me pictures of why the rest of the line was fine.&rdquo;</blockquote>
+      <cite>&mdash; Verified Google review, Decatur</cite>
+    </div>
+  </section>
+</div>
+
+<div class="frame-label">Mobile — 390px</div>
+<div class="artboard mobile">
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="site-name" href="/">Copperline Plumbing</a>
+      <a class="site-header-phone" href="tel:+17705550148">(770) 555-0148</a>
+    </div>
+  </header>
+
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">Tucker · Decatur · Chamblee</p>
+      <h1>Old houses. Honest fixes.</h1>
+      <p class="subhead">Repair-first plumbing for 1940s&ndash;70s intown homes &mdash; a flat-rate quote before we start.</p>
+      <div class="hero-ctas">
+        <a class="cta cta-primary" href="tel:+17705550148">Call for a straight answer</a>
+      </div>
+    </div>
+    <img src="../hero-DUMMY.png" alt="Concept placeholder: technician's hands on copper pipe under a crawlspace joist" />
+  </section>
+
+  <section id="proof-m" class="container proof-section">
+    <p class="eyebrow">What repair-first looks like</p>
+    <h2>One failed joint, not a new system</h2>
+    <p class="proof-body">A Decatur homeowner got two repipe quotes &mdash; $8,400 and $9,100. We found one failed joint and fixed it for $240, with photos of the rest of the line.</p>
+    <div class="quote-slip">
+      <p class="slip-label">As quoted</p>
+      <blockquote>&ldquo;Copperline fixed the actual leak for $240 and showed me pictures of why the rest of the line was fine.&rdquo;</blockquote>
+      <cite>&mdash; Verified Google review, Decatur</cite>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

@@ -47,9 +47,13 @@ function isCurrent(href: string, path: string) {
   .nav-list a {
     color: var(--c-ink);
     text-decoration: none;
+    font-family: var(--font-display);
+    font-size: var(--fs-2);
     font-weight: 600;
     padding: var(--sp-2) 0;
-    display: inline-block;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .nav-list a:hover {

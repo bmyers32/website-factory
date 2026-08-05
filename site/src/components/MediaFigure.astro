@@ -26,9 +26,20 @@ if (!alt.trim()) {
 <style>
   .media-figure {
     margin: 0;
+    /* Grid/flex items default to min-width:auto, which resolves to a
+       replaced element's intrinsic size and can silently override
+       `img { max-width: 100% }` at the track-sizing stage — the image
+       renders "shrunk" but the grid track (and the whole row) still grows
+       to its intrinsic width, overflowing the viewport. min-width: 0 here
+       lets the track shrink to the container instead. (Caught during
+       Phase 5 QA: a 390px viewport was overflowing horizontally because
+       of exactly this on the hero and about-section images.) */
+    min-width: 0;
   }
 
   .media-figure img {
+    max-width: 100%;
+    height: auto;
     border-radius: var(--radius-base);
   }
 

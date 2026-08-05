@@ -1,22 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Cta from '../components/Cta.astro';
-
-const siteName = 'Copperline Roofing & Sheet Metal';
-const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Contact', href: '/#contact' },
-];
+import { siteName, phone, phoneHref, hours, trustLine, serviceArea, primaryNavItems, footerNavItems } from '../lib/site';
 ---
 
 <BaseLayout
   title={`Page not found — ${siteName}`}
   description="The page you're looking for doesn't exist."
   siteName={siteName}
-  navItems={navItems}
-  phone="(555) 010-0142"
-  phoneHref="5550100142"
+  navItems={primaryNavItems}
+  footerNavItems={footerNavItems}
+  phone={phone}
+  phoneHref={phoneHref}
+  hours={hours}
+  trustLine={trustLine}
+  serviceArea={serviceArea}
   noindex={true}
+  stickyCallBar
 >
   <section class="container not-found">
     <h1>Page not found</h1>

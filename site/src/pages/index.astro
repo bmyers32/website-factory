@@ -1,157 +1,219 @@
 ---
-// SMOKE-TEST PAGE — renders the provisional primitives against the fictional
-// fixture in fixtures/copperline-fixture-spec.md. Not a client deliverable.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServiceListItem from '../components/ServiceListItem.astro';
-import ProofItem from '../components/ProofItem.astro';
-import MediaFigure from '../components/MediaFigure.astro';
+import QuoteSlip from '../components/QuoteSlip.astro';
 import FaqItem from '../components/FaqItem.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import ContactForm from '../components/ContactForm.astro';
+import MediaFigure from '../components/MediaFigure.astro';
 import Cta from '../components/Cta.astro';
+import { contactFields } from '../lib/contact-fields';
+import { siteUrl } from '../lib/env';
+import {
+  legalName,
+  siteName,
+  phone,
+  phoneHref,
+  hours,
+  serviceArea,
+  trustLine,
+  primaryNavItems,
+  footerNavItems,
+} from '../lib/site';
 import hero from '../assets/hero-DUMMY.png';
 import team from '../assets/team-DUMMY.png';
-import work1 from '../assets/work1-DUMMY.png';
 
-const siteName = 'Copperline Roofing & Sheet Metal';
-const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Contact', href: '/#contact' },
-];
-const phone = '(555) 010-0142';
-const phoneHref = '5550100142';
-const hours = [
-  { label: 'Mon–Fri', hours: '7:00 AM–5:00 PM' },
-  { label: 'Sat', hours: 'By appointment' },
-  { label: 'Sun', hours: 'Closed' },
-];
+// Approved copy source: site/phase1-content-draft.md (twice-corrected,
+// operator-approved). Do not edit copy here without updating that file.
 
 const services = [
   {
-    title: 'Roof replacement',
-    description: 'Full tear-off and replacement, asphalt or standing-seam metal.',
+    title: 'Repiping (galvanized & polybutylene)',
+    description:
+      'Full or partial repipe for 1940s–70s homes, PEX or copper, wall repair coordinated. We repipe when the pipe is actually done — not before.',
   },
   {
-    title: 'Custom copper flashing',
-    description: 'Hand-formed copper flashing and valleys fabricated in-shop.',
+    title: 'Leak detection & repair',
+    description: 'Slab, wall, and crawlspace leaks located with minimal cutting.',
   },
   {
-    title: 'Storm repair',
-    description: 'Tarping and repair scheduling, with insurance paperwork support.',
+    title: 'Drain & sewer service',
+    description: 'Clearing, camera inspection, and an honest clear-vs-replace read.',
+  },
+  {
+    title: 'Water heater repair & replacement',
+    description: "Tank and tankless, repair quoted first when it'll hold.",
+  },
+  {
+    title: 'Fixture repair & install',
+    description: 'Faucets, toilets, disposals, shutoff valves.',
   },
 ];
+
+// Last item is the shared `trustLine` constant, not a re-typed string —
+// keeps this byte-identical with the footer's rendering of the same
+// credential (caught as a NAP-drift finding during Phase 5 QA).
+const aboutFacts = ['Family-run, two trucks, three licensed techs, 9 years.', 'Techs are employees, not commissioned salespeople.', trustLine];
 
 const faqs = [
   {
-    question: 'Will the crew match the existing roofline instead of a generic patch?',
-    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+    question: 'Do I need a full repipe, or can this be repaired?',
+    answer:
+      "We diagnose first and quote flat-rate before any work starts — repiping only when the pipe is actually done. You'll see photos of what we find before we recommend anything.",
   },
   {
-    question: 'How long does a full replacement actually take?',
-    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+    question: 'Am I being upsold?',
+    answer: 'Our techs are employees, not commissioned salespeople. You get a flat-rate number in writing before we start.',
   },
   {
-    question: 'Do you handle the insurance claim paperwork or is that on me?',
-    answer: 'Fictional smoke-test answer placeholder — a real build sources this from CLIENT_SPEC §5.',
+    // VERBATIM — do not paraphrase. Exact CLIENT_SPEC §4 guarantee wording,
+    // corrected twice already (see phase1-content-draft.md) for accidental
+    // paraphrase and truncation. Copy byte-for-byte only.
+    question: 'Will you actually show up in the window?',
+    answer: 'Arrival window honored or the service-call fee is waived.',
   },
 ];
+
+const pageUrl = new URL('/', siteUrl).toString();
 ---
 
 <BaseLayout
-  title={`${siteName} — Smoke Test`}
-  description="Factory smoke-test rendering of the provisional Astro base against a fictional fixture business."
+  title="Copperline Plumbing — Old houses. Honest fixes."
+  description="Repair-first residential plumbing for 1940s–70s intown Atlanta homes: flat-rate quotes before we start, honest diagnosis, no upsell. Tucker, Decatur, Chamblee, Brookhaven, North Druid Hills."
   siteName={siteName}
-  navItems={navItems}
+  navItems={primaryNavItems}
+  footerNavItems={footerNavItems}
   phone={phone}
   phoneHref={phoneHref}
   hours={hours}
+  trustLine={trustLine}
+  serviceArea={serviceArea}
+  stickyCallBar
 >
   <Fragment slot="schema">
-    <script type="application/ld+json" is:inline set:html={JSON.stringify({
-      '@context': 'https://schema.org',
-      '@type': 'RoofingContractor',
-      name: siteName,
-      telephone: phone,
-      openingHoursSpecification: hours.map((row) => ({
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: row.label,
-        description: row.hours,
-      })),
-    })} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Plumber',
+        name: legalName,
+        telephone: phoneHref,
+        url: pageUrl,
+        areaServed: ['Tucker, GA', 'Decatur, GA', 'Chamblee, GA', 'Brookhaven, GA', 'North Druid Hills, GA'],
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            opens: '07:30',
+            closes: '17:30',
+          },
+        ],
+      })}
+    />
   </Fragment>
-
-  <div class="smoke-test-banner container">
-    <strong>Factory smoke test.</strong> Copperline Roofing & Sheet Metal is a fictional
-    fixture business (see <code>fixtures/copperline-fixture-spec.md</code>) used to
-    exercise the provisional base. Not a real business, not for client delivery.
-  </div>
 
   <section class="hero container">
     <div class="hero-copy">
-      <h1>Roofing and custom sheet metal, built to match what's already there.</h1>
-      <p>
-        Fictional smoke-test copy standing in for client-voiced language. A real build
-        replaces this with copy realized from the approved voice corpus (CLIENT_SPEC §5).
+      <p class="eyebrow">Tucker &middot; Decatur &middot; Chamblee &middot; Brookhaven &middot; North Druid Hills</p>
+      <h1>Old houses. Honest fixes.</h1>
+      <p class="subhead">
+        Repair-first plumbing for 1940s&ndash;70s intown homes &mdash; a flat-rate quote before we start, and a
+        straight answer about what&rsquo;s actually worth fixing.
       </p>
       <div class="hero-ctas">
-        <Cta href="tel:5550100142" label={`Call ${phone}`} variant="primary" />
-        <Cta href="/#contact" label="Request a quote" variant="secondary" />
+        <Cta href={`tel:${phoneHref}`} label="Call for a straight answer" variant="primary" size="lg" />
+        <Cta href="#proof" label="See how a repair-first quote works" variant="secondary" />
       </div>
     </div>
-    <MediaFigure src={hero} alt="Fictional smoke-test hero photo of a copper roof valley under construction." loading="eager" />
+    <MediaFigure
+      src={hero}
+      alt="Placeholder image — hero photography has not yet been supplied."
+      loading="eager"
+    />
+  </section>
+
+  <section id="proof" class="container proof-section">
+    <p class="eyebrow">What repair-first actually looks like</p>
+    <h2>One failed joint, not a new system</h2>
+    <p class="proof-body">
+      A Decatur homeowner in a 1962 ranch got two repipe quotes &mdash; $8,400 and $9,100. We opened the wall behind
+      the laundry room, found one failed joint, and fixed it for $240. We showed her photos of the rest of the line:
+      it had years left.
+    </p>
+    <QuoteSlip
+      statement="Two other companies quoted a full repipe. Copperline fixed the actual leak for $240 and showed me pictures of why the rest of the line was fine."
+      attribution="Verified Google review, Decatur"
+    />
   </section>
 
   <section id="services" class="container">
-    <h2>Services</h2>
+    <h2>What we fix</h2>
+    <p class="section-intro">Straight answers on the calls we get most.</p>
     <div class="service-grid">
       {services.map((service) => <ServiceListItem title={service.title} description={service.description} />)}
     </div>
   </section>
 
-  <section class="container">
-    <h2>The crew</h2>
-    <MediaFigure src={team} alt="Fictional smoke-test photo of the Copperline crew." caption="Fictional smoke-test caption." />
-  </section>
-
-  <section class="container">
-    <h2>Recent work</h2>
-    <MediaFigure src={work1} alt="Fictional smoke-test photo of a completed standing-seam metal roof." />
-    <ProofItem
-      kind="stat"
-      statement="Fictional smoke-test placeholder — not a real client statistic."
-      attribution="Smoke-test fixture"
+  <section id="about" class="container">
+    <h2>Why repair-first</h2>
+    <QuoteSlip
+      statement="We quote flat-rate before we touch anything. Nobody standing in your kitchen doing math against your worry. If we open the wall and it's different than we thought, we stop and talk — the number doesn't creep."
+      attribution="— Copperline Plumbing"
     />
+    <div class="about-grid">
+      <ul class="about-facts">
+        {aboutFacts.map((fact) => <li>{fact}</li>)}
+      </ul>
+      <MediaFigure src={team} alt="Placeholder image — team photography has not yet been supplied." />
+    </div>
   </section>
 
-  <section class="container">
+  <section id="faq" class="container">
     <h2>Common questions</h2>
     {faqs.map((faq) => <FaqItem question={faq.question}>{faq.answer}</FaqItem>)}
   </section>
 
   <section id="contact" class="container">
-    <h2>Get a quote</h2>
-    <p>
-      The optional contact-form interface (<code>src/components/ContactForm.astro</code>) is
-      intentionally not enabled on this page — no delivery endpoint, recipient, or retention
-      rule exists for a fixture business. Call or use the interface once a real spec sets
-      <code>contact_form: on</code> with those decisions recorded.
+    <QuoteSlip
+      statement="They gave a window, hit it, quoted flat before starting, and left the crawlspace cleaner than they found it."
+      attribution="Verified Google review, Tucker"
+    />
+    <h2>Get a straight answer</h2>
+    <p class="callback-copy">
+      Leave a weekday message and expect a same-day callback. After hours, tell us what&rsquo;s going on in the form
+      below &mdash; we&rsquo;ll call you back the next business morning.
     </p>
-    <Cta href="tel:5550100142" label={`Call ${phone}`} variant="primary" />
+    <p class="service-area-copy">{serviceArea}</p>
+    <ContactBlock phone={phone} phoneHref={phoneHref} hours={hours} />
+    <ContactForm action="/api/contact" fields={contactFields} submitLabel="Send message" />
   </section>
 </BaseLayout>
 
 <style>
-  .smoke-test-banner {
-    background: var(--c-surface-alt);
-    border: 2px dashed var(--c-accent-2);
-    border-radius: var(--radius-base);
-    padding: var(--sp-3);
-    margin-block: var(--sp-4);
-    font-size: var(--fs-1);
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: var(--fs-2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-ink-muted);
+    margin: 0 0 var(--sp-3);
   }
 
   .hero {
     display: grid;
     gap: var(--sp-5);
     padding-block: var(--sp-5);
+  }
+
+  .hero h1 {
+    line-height: 1.15;
+  }
+
+  .subhead {
+    font-size: var(--fs-3);
+    color: var(--c-ink-muted);
+    max-width: 34ch;
   }
 
   .hero-ctas {
@@ -161,20 +223,66 @@ const faqs = [
     margin-top: var(--sp-4);
   }
 
+  section {
+    padding-block: var(--sp-5);
+  }
+
+  .proof-body {
+    font-size: var(--fs-3);
+    max-width: 62ch;
+    margin-bottom: var(--sp-4);
+  }
+
+  .section-intro {
+    color: var(--c-ink-muted);
+  }
+
   .service-grid {
     display: grid;
     gap: var(--sp-4);
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    margin-top: var(--sp-4);
   }
 
-  section {
-    padding-block: var(--sp-5);
+  .about-grid {
+    display: grid;
+    gap: var(--sp-4);
+    margin-top: var(--sp-4);
+  }
+
+  .about-facts {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .about-facts li {
+    margin-bottom: var(--sp-2);
+  }
+
+  .callback-copy {
+    font-size: var(--fs-3);
+    max-width: 50ch;
+    margin-top: var(--sp-3);
+  }
+
+  .service-area-copy {
+    color: var(--c-ink-muted);
+    margin-bottom: var(--sp-4);
+  }
+
+  #contact :global(.contact-form) {
+    margin-top: var(--sp-5);
   }
 
   @media (min-width: 48rem) {
     .hero {
       grid-template-columns: 1.1fr 1fr;
       align-items: center;
+    }
+
+    .about-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
     }
   }
 </style>

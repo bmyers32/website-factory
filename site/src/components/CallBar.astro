@@ -1,0 +1,49 @@
+---
+// Persistent mobile call action (Checkpoint 2+ directive 3). CSS-only —
+// a `tel:` link needs no client JS, keeping the zero-JS-by-default rule
+// intact. Rendered last in <body> by BaseLayout when `stickyCallBar` is
+// true; BaseLayout also adds a `has-call-bar` class to <body> so
+// global.css can reserve matching bottom padding — see the comment there
+// for why the bar never overlaps footer/page content.
+import Cta from './Cta.astro';
+
+interface Props {
+  phone: string;
+  phoneHref: string;
+}
+
+const { phone, phoneHref } = Astro.props;
+---
+
+<div class="call-bar">
+  {/* Default size, not "lg" — "lg" wraps this label to two lines at
+      narrow widths, which grew the bar taller than the reserved
+      body.has-call-bar padding and covered the footer (caught in Phase 5
+      QA via a scroll-to-bottom overlap check). Default size keeps this
+      single-line at 390px while still meeting the 44px target. */}
+  <Cta href={`tel:${phoneHref}`} label={`Call ${phone}`} variant="primary" />
+</div>
+
+<style>
+  .call-bar {
+    display: none;
+  }
+
+  @media (max-width: 47.99rem) {
+    .call-bar {
+      display: block;
+      position: fixed;
+      inset-inline: 0;
+      bottom: 0;
+      z-index: 50;
+      background: var(--c-surface);
+      border-top: 2px solid var(--c-ink);
+      padding: var(--sp-2) var(--sp-3);
+      padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .call-bar :global(.cta) {
+      width: 100%;
+    }
+  }
+</style>

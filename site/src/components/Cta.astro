@@ -3,12 +3,13 @@ interface Props {
   href: string;
   label: string;
   variant?: 'primary' | 'secondary';
+  size?: 'default' | 'lg';
 }
 
-const { href, label, variant = 'primary' } = Astro.props;
+const { href, label, variant = 'primary', size = 'default' } = Astro.props;
 ---
 
-<a class:list={['cta', `cta-${variant}`]} href={href}>
+<a class:list={['cta', `cta-${variant}`, size === 'lg' && 'cta-lg']} href={href}>
   {label}
 </a>
 
@@ -20,9 +21,16 @@ const { href, label, variant = 'primary' } = Astro.props;
     min-height: 44px;
     padding: var(--sp-2) var(--sp-4);
     border-radius: var(--radius-base);
+    font-family: var(--font-display);
     font-weight: 700;
     text-decoration: none;
     border: 2px solid var(--c-accent);
+  }
+
+  .cta-lg {
+    min-height: 56px;
+    padding: var(--sp-3) var(--sp-5);
+    font-size: var(--fs-4);
   }
 
   .cta-primary {

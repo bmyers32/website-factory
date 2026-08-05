@@ -2,12 +2,17 @@
 interface Props {
   name: string;
   label: string;
-  type?: 'text' | 'email' | 'tel' | 'textarea';
+  control?: 'input' | 'textarea';
+  /** Only meaningful when control === 'input'. */
+  type?: 'text' | 'email' | 'tel';
   required?: boolean;
   autocomplete?: string;
+  maxLength?: number;
+  inputMode?: 'text' | 'tel' | 'email' | 'numeric';
 }
 
-const { name, label, type = 'text', required = false, autocomplete } = Astro.props;
+const { name, label, control = 'input', type = 'text', required = false, autocomplete, maxLength, inputMode } =
+  Astro.props;
 const id = `field-${name}`;
 const errorId = `${id}-error`;
 ---
@@ -18,10 +23,26 @@ const errorId = `${id}-error`;
     {required && <span aria-hidden="true"> *</span>}
   </label>
   {
-    type === 'textarea' ? (
-      <textarea id={id} name={name} required={required} aria-describedby={errorId} rows={5} />
+    control === 'textarea' ? (
+      <textarea
+        id={id}
+        name={name}
+        required={required}
+        aria-describedby={errorId}
+        rows={5}
+        maxlength={maxLength}
+      />
     ) : (
-      <input id={id} name={name} type={type} required={required} autocomplete={autocomplete} aria-describedby={errorId} />
+      <input
+        id={id}
+        name={name}
+        type={type}
+        required={required}
+        autocomplete={autocomplete}
+        aria-describedby={errorId}
+        maxlength={maxLength}
+        inputmode={inputMode}
+      />
     )
   }
   <p id={errorId} class="form-field-error" role="alert" hidden />
@@ -36,6 +57,7 @@ const errorId = `${id}-error`;
   }
 
   .form-field label {
+    font-family: var(--font-display);
     font-weight: 600;
   }
 

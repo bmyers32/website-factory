@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  legalName,
+  siteName,
+  phone,
+  phoneHref,
+  email,
+  hours,
+  trustLine,
+  serviceArea,
+  primaryNavItems,
+  footerNavItems,
+} from '../lib/site';
+
+// Factual-only content, per CLIENT_SPEC §8 and CLAUDE.md's ban on drafting
+// legal policy language from general knowledge / insufficient inputs. No
+// operator-approved policy template exists anywhere in this repo (checked)
+// — this page states only what §8 actually records, nothing more. Full
+// legal-review policy text remains pending the operator's approved source.
+---
+
+<BaseLayout
+  title="Privacy — Copperline Plumbing"
+  description="What Copperline Plumbing's website collects through its contact form, why, and for how long."
+  siteName={siteName}
+  navItems={primaryNavItems}
+  footerNavItems={footerNavItems}
+  phone={phone}
+  phoneHref={phoneHref}
+  hours={hours}
+  trustLine={trustLine}
+  serviceArea={serviceArea}
+  stickyCallBar
+>
+  <section class="container privacy">
+    <h1>Privacy</h1>
+    <p>This page describes what this website collects and why.</p>
+
+    <h2>Contact form</h2>
+    <p>
+      If you use the contact form, we collect your name, phone number, neighborhood (optional), and message. This
+      information is used only to call you back about your request. It passes from the form to our office inbox and
+      is deleted after 90 days.
+    </p>
+
+    <h2>No other data collection</h2>
+    <p>This site does not use analytics or any other third-party service that collects visitor data.</p>
+
+    <h2>Contact</h2>
+    <p>
+      {legalName} &middot; <a href={`mailto:${email}`}>{email}</a> &middot; <a href={`tel:${phoneHref}`}>{phone}</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy {
+    padding-block: var(--sp-5);
+    max-width: 60ch;
+  }
+
+  .privacy h2 {
+    margin-top: var(--sp-5);
+  }
+</style>

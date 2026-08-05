@@ -1,32 +1,50 @@
 /*
-  Design Token Contract (CLAUDE.md).
-  SMOKE-TEST VALUES: this palette/scale exists to prove the interface works end to
-  end. It is not a client identity and must not be reused as one — every real
-  build replaces these values from client-specific provenance (Phase 2).
+  Design Token Contract (CLAUDE.md) — Copperline Plumbing (Phase C sunny-day
+  fixture, CLIENT_SPEC-sunny-copperline.md). Direction A, "Written Estimate":
+  signature system is the flat-rate paper quote, the single fact the spec's
+  three stated customer concerns all resolve back to. Ink-on-paper palette
+  deliberately breaks from the cream/serif/terracotta cluster CLAUDE.md flags
+  as a tell — surface is a cool low-chroma paper (not cream), display face is
+  monospace (not serif), accent is a desaturated copper (not bright terracotta).
 
-  Type scale ratio: 1.2 (minor third), base = --fs-2 = 1rem.
-  Space scale: loosely 1.5x steps from a 4px unit, not strict powers of two,
-  so mid-range gaps (cards, section padding) have a usable value.
+  Fonts: IBM Plex Mono (display) + IBM Plex Sans (body), SIL Open Font License
+  1.1 — commercial use pre-cleared by the license text itself, satisfying the
+  spec's font-rights gate without a separate confirmation step. Self-hosted
+  at site/src/assets/fonts/ (license.txt alongside); @font-face declarations
+  in global.css. System fallbacks below remain for the (unlikely) case a
+  font file fails to load.
+
+  Type scale ratio: 1.25 (major third), base = --fs-2 = 1rem.
+  Space scale unchanged from factory default — spacing is not a distinctiveness
+  lever ("tokens create consistency, not identity"); only color/type/shape carry
+  this site's provenance.
 */
 
 :root {
   /* Color */
-  --c-surface: #f7f5f2;
-  --c-surface-alt: #eee9e2;
-  --c-ink: #1f1b16;
-  --c-ink-muted: #5a5248;
-  --c-accent: #8a5a2b;
-  --c-accent-2: #3f6357;
+  --c-surface: #f3f1eb;
+  --c-surface-alt: #e7e3d9;
+  --c-ink: #20262b;
+  --c-ink-muted: #5b6570;
+  /* --c-accent on --c-surface (and its reverse, --c-surface text on an
+     --c-accent background) computes to ~4.74:1 — clears normal-text AA
+     (4.5:1) at this exact value, confirmed by the operator, regardless of
+     size/weight. Resolved: nav hover/current-page state, Cta secondary
+     label, and header/contact phone displays all keep using --c-accent as
+     text color as-is. Do not lighten or mute this value — that's the only
+     way this margin could erode. */
+  --c-accent: #9c5a34;
+  --c-accent-2: #33454c;
 
   /* Type */
-  --font-display: 'Georgia', 'Iowan Old Style', serif;
-  --font-body: -apple-system, 'Segoe UI', system-ui, sans-serif;
-  --fs-1: 0.833rem;
+  --font-display: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --font-body: 'IBM Plex Sans', -apple-system, 'Segoe UI', system-ui, sans-serif;
+  --fs-1: 0.8rem;
   --fs-2: 1rem;
-  --fs-3: 1.2rem;
-  --fs-4: 1.44rem;
-  --fs-5: 1.728rem;
-  --fs-6: 2.074rem;
+  --fs-3: 1.25rem;
+  --fs-4: 1.563rem;
+  --fs-5: 1.953rem;
+  --fs-6: 2.441rem;
 
   /* Space */
   --sp-1: 0.25rem;
@@ -37,6 +55,6 @@
   --sp-6: 4rem;
 
   /* Shape */
-  --radius-base: 0.25rem;
-  --radius-large: 0.75rem;
+  --radius-base: 0.125rem;
+  --radius-large: 0.25rem;
 }

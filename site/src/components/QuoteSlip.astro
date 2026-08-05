@@ -1,0 +1,74 @@
+---
+// Copperline's "Written Estimate" signature system — a self-contained
+// component with its own public prop API, not a wrapper reaching into
+// ProofItem's internal markup. Used for testimonials and the owner's
+// direct quote. Never invent quotes — statement/attribution must trace to
+// an approved CLIENT_SPEC source (§5/§6).
+interface Props {
+  statement: string;
+  attribution?: string;
+  sourceUrl?: string;
+  /** Small furniture label above the quote. */
+  label?: string;
+}
+
+const { statement, attribution, sourceUrl, label = 'As quoted' } = Astro.props;
+---
+
+<figure class="quote-slip">
+  <p class="slip-label">{label}</p>
+  <blockquote>
+    <p>{statement}</p>
+  </blockquote>
+  {
+    attribution && (
+      <figcaption>
+        {sourceUrl ? <a href={sourceUrl}>{attribution}</a> : attribution}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .quote-slip {
+    margin: 0;
+    max-width: 46rem;
+    border-top: 2px solid var(--c-ink);
+    border-bottom: 1px solid var(--c-ink-muted);
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: var(--sp-4) 0;
+  }
+
+  .slip-label {
+    font-family: var(--font-display);
+    font-size: var(--fs-1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-accent);
+    margin: 0 0 var(--sp-2);
+  }
+
+  .quote-slip blockquote {
+    margin: 0 0 var(--sp-2);
+    font-family: var(--font-body);
+    font-size: var(--fs-4);
+    line-height: 1.4;
+    color: var(--c-ink);
+  }
+
+  .quote-slip blockquote p {
+    margin: 0;
+  }
+
+  .quote-slip figcaption {
+    font-family: var(--font-display);
+    font-size: var(--fs-2);
+    color: var(--c-ink-muted);
+  }
+
+  .quote-slip figcaption a {
+    color: inherit;
+  }
+</style>

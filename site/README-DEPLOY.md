@@ -5,8 +5,8 @@ connecting this repository. No credentials or secrets are handled here or by
 the agent — Wrangler was not authenticated and no Cloudflare API token was
 created.
 
-This project is a **smoke-test fixture** (see `fixtures/copperline-fixture-spec.md`),
-not a client site. It belongs on the operator's own sandbox Cloudflare account,
+This project is a **Phase C sunny-day fixture** (see `site/CLIENT_SPEC-sunny-copperline.md`
+and `PROGRESS.md`), not a real client site. It belongs on the operator's own sandbox Cloudflare account,
 not a client-owned one — the client-owned-hosting rule in `CLAUDE.md` applies
 starting with the first real paid build.
 
@@ -34,8 +34,41 @@ starting with the first real paid build.
 for the noindex behavior — verify it live after connecting, per the operator's
 instruction not to treat a local build as deployment evidence.
 
+## Contact form (`functions/api/contact.ts`)
+Code-complete as of Phase 3 assembly, wired live in `ContactForm.astro`'s
+`action="/api/contact"`, but **fails closed** without secrets — every
+submission today gets a graceful "please call us" response, never a crash,
+never a false success, never an actual send. Two secrets required before
+it becomes genuinely operational:
+
+| Secret | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key. Fixture round: operator supplies a restricted test key at QA. Real client round: client-owned Resend account + verified sending domain (see `ROADMAP.md` RM-001), unless the contract defines a managed service. |
+| `CONTACT_RECIPIENT` | Delivery inbox. Fixture round: operator's test inbox (the spec's `office@copperlineplumbing.example` is a reserved/non-deliverable placeholder domain, not usable as-is). |
+
+Set both as **Cloudflare Pages secrets** (dashboard → Settings → Environment
+variables → encrypt), never committed to the repo, never logged in plaintext.
+
+**Rate limiting is not implemented in application code.** Pages Functions are
+stateless edge functions with no in-repo place to persist a per-IP request
+count without adding a KV or D1 dependency, which hasn't been approved for
+this build. Before any real launch, the operator must add a Cloudflare
+dashboard **Rate Limiting Rule** (Security → WAF → Rate limiting rules)
+scoped to `POST /api/contact` (e.g., 5 requests per IP per 10 minutes). This
+is a recorded Trust/Dependency Inventory item, not a code gap — see the
+Phase 5 QA report for its PENDING status.
+
+The function's success/failure responses are plain unstyled HTML rendered
+directly by the function (not a redirect to a static page) — see the
+comment at the top of `contact.ts` for why, and `ROADMAP.md` RM-002 for the
+deferred alternative pattern.
+
+Type-checking: `npm run check` (`astro check`) does **not** cover
+`functions/` — it's scoped to `src/**/*` only. Use the dedicated
+`npm run check:functions` (`tsc --noEmit -p tsconfig.functions.json`,
+using the real `@cloudflare/workers-types` package) to type-check the
+Function itself.
+
 ## Not yet configured (by design)
-- No contact form handler, recipient, or third-party service — `ContactForm.astro`
-  exists as an interface but is not wired into any page or backend.
 - No custom domain/DNS — this is a `*.pages.dev` preview until a real client
   build assigns one.

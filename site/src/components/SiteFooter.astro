@@ -15,9 +15,13 @@ interface Props {
   phoneHref: string;
   email?: string;
   hours?: HoursRow[];
+  /** Plain trust line (e.g. license/insurance) — not a mailing address. */
+  trustLine?: string;
+  /** Plain service-area line — used in place of a street address when none exists. */
+  serviceArea?: string;
 }
 
-const { siteName, navItems, addressLines, phone, phoneHref, email, hours } = Astro.props;
+const { siteName, navItems, addressLines, phone, phoneHref, email, hours, trustLine, serviceArea } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -26,6 +30,8 @@ const year = new Date().getFullYear();
     <div>
       <p class="site-footer-name">{siteName}</p>
       <ContactBlock addressLines={addressLines} phone={phone} phoneHref={phoneHref} email={email} hours={hours} />
+      {serviceArea && <p class="site-footer-note">{serviceArea}</p>}
+      {trustLine && <p class="site-footer-note">{trustLine}</p>}
     </div>
     <nav aria-label="Footer">
       <ul class="site-footer-nav">
@@ -74,11 +80,22 @@ const year = new Date().getFullYear();
 
   .site-footer-nav a {
     color: var(--c-ink);
+    font-family: var(--font-display);
     text-decoration: none;
+    display: inline-block;
+    /* WCAG 2.2 SC 2.5.8 (24px min target) — plain text links here measured
+       20px tall with no padding (caught in Phase 5 QA's structural audit). */
+    padding-block: var(--sp-2);
   }
 
   .site-footer-nav a:hover {
     color: var(--c-accent);
+  }
+
+  .site-footer-note {
+    margin: var(--sp-2) 0 0;
+    color: var(--c-ink-muted);
+    max-width: 32rem;
   }
 
   .site-footer-legal {
